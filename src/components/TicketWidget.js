@@ -1,14 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
-import { getRowName, getSeatNum } from '../helpers';
-import { range } from '../utils';
+import React, { useContext } from "react";
+import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Seat from "./Seat";
+// import "tippy.js/dist/tippy.css";
+import { SeatContext } from "./SeatContext";
+import { getRowName, getSeatNum } from "../helpers";
+import { range } from "../utils";
 
 const TicketWidget = () => {
-  // TODO: use values from Context
-  const numOfRows = 6;
-  const seatsPerRow = 6;
+  const {
+    state: { numOfRows, seatsPerRow, seats }
+  } = useContext(SeatContext);
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
@@ -23,10 +25,15 @@ const TicketWidget = () => {
             <RowLabel>Row {rowName}</RowLabel>
             {range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-
+              const seat = seats[seatId].isBooked;
               return (
                 <SeatWrapper key={seatId}>
-                  {/* TODO: Render the actual <Seat /> */}
+                  <Seat
+                    seatId={seatId}
+                    seatIndex={seatIndex}
+                    rowName={rowName}
+                    seat={seat}
+                  />
                 </SeatWrapper>
               );
             })}

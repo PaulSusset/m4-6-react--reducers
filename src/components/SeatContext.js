@@ -3,7 +3,7 @@ export const SeatContext = React.createContext();
 
 const initialState = {
   hasLoaded: false,
-  bookedSeats: null,
+  seats: null,
   numOfRows: 0,
   seatsPerRow: 0
 };
@@ -12,11 +12,11 @@ const reducer = (state, action) => {
   console.log(action);
   switch (action.type) {
     case "receive-seat-info-from-server": {
-      const { bookedSeats, numOfRows, seatsPerRow } = state;
+      const { seats, numOfRows, seatsPerRow } = action.data;
       return {
         ...state,
         hasloaded: true,
-        bookedSeats,
+        seats,
         numOfRows,
         seatsPerRow
       };
@@ -31,9 +31,8 @@ export const SeatProvider = ({ children }) => {
   const receiveSeatInfoFromServer = data => {
     dispatch({
       type: "receive-seat-info-from-server",
-      ...data
+      data
     });
-    console.log(state);
   };
 
   return (
